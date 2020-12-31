@@ -1,10 +1,8 @@
-[toc]
-
 ## 前言
 
 HBuilderX虽然比不上VSCode，毕竟后者的依托微软巨头，但其推出的uniapp在支持国产特色上如小程序还是优于VSCode和Flutter(尽管介绍都是说Flutter如何优秀，便不支持小程序在中国就是硬伤)。它为使用者提供了云打包和离线打包两种形式，但云打包有着次数限制(好像每天10次,可付费解锁)，并且服务器繁忙时需要排队等候，不利于开发者的正常调试。从另一方面来看，尽管官方对于隐私保护极为重视，但还是无法让使用者打消代码上传泄露的疑虑，所以离线打包作为第二条打包途径理当重视。后面还有一点就是云打包无法实现uniapp和android混合编码，只能通过H5+的来调用android原生代码，有时这样方式非常低效。具体可见最后的介绍。
 
-![package](images\package.png)
+![package](images/package.png)
 
 这里要记录，是因为如果你一味按官方的离线打包教程是无法成功，它有好多问题没指出，当然本文也只是总结我遇到的问题，若有其它问题欢迎一起探讨。学习uniapp离线打包，其实就是Android Studio打包，所以从它开始讲起。
 
@@ -20,46 +18,46 @@ AS开发环境配置是入门者第一个难关，我也停留这好多次，只
 
 进入JDK官方下载地址 <https://www.oracle.com/java/technologies/javase-downloads.html>选择好JDK版本，点击【JDK Download】按钮
 
-![jdk0](images\jdk0.png)
+![jdk0](images/jdk0.png)
 
 根据开发的平台选择版本。我的系统是win10-64位，选择如下的版本：
 
-![jdk1](images\jdk1.png)
-![jdk2](images\jdk2.png)
+![jdk1](images/jdk1.png)
+![jdk2](images/jdk2.png)
 
 如果需要登录账号密码，可以直接网上找一个Oracle共享账号密码就行，或者自己注册一个即可。下面是网上找的账号密码，亲测可用。Oracle帐号：2696671285@qq.comOracle，密码：Oracle123。
 
 下载后，可以鼠标右击【jdk-11.0.9_windows-x64_bin】选择【以管理员身份运行】，然后就一直下一步就好了，但是要注意要保存安装的目录，后面会用到。打开jdk的安装路径，选中地址栏鼠标右击选择【复制】。温馨提示：jdk的默认安装路径是【C:\Program Files\Java\jdk-11.0.9】。
 
-![jdk3](images\jdk3.png)
+![jdk3](images/jdk3.png)
 
 右击【此电脑】、选择【属性】、选择【高级系统设置】、在系统变量下点击【新建】
 
-![jdk4](images\jdk4.png)
+![jdk4](images/jdk4.png)
 
 变量名输入【JAVA_HOME】，在变量值栏中使用快捷键Ctrl+V粘贴jdk的路径，然后点击【确定】。
 
-![jdk5](images\jdk5.png)
+![jdk5](images/jdk5.png)
 
 一样点击【新建】。变量名中输入【CLASSPATH】,变量值中输入【.;%JAVA_HOME%\lib】（建议直接复制【】里面的内容）然后点击【确定】。
 
-![jdk6](images\jdk6.png)
+![jdk6](images/jdk6.png)
 
 找到系统变量中的【Path】变量，然后点击【编辑】。点击【新建】，输入【%JAVA_HOME%\bin】然后点击【确定】。
 
-![jdk7](images\jdk7.png)
+![jdk7](images/jdk7.png)
 
 把所有窗口点击确认退出即可。按下键盘上的快捷键【win+r】，输入【cmd】然后点击【确定】，输入【java -version】并按下键盘上的【Enter】键得到jdk的安装版本。
 
-![jdk8](images\jdk8.png)
+![jdk8](images/jdk8.png)
 
 输入【java】然后按键盘上面的【Enter】键，得到以下信息。
 
-![jdk9](images\jdk9.png)
+![jdk9](images/jdk9.png)
 
 输入【javac】然后按键盘上面的【Enter】键，得到以下信息。
 
-![jdk10](images\jdk10.png)
+![jdk10](images/jdk10.png)
 
 到这里JDK就安装以及配置完毕啦。如果你想使用jre则使用前面的命令先生成jre，然后加入到系统环境变量中【%JAVA_HOME%\jre\bin】。由于AS4.1已经自带jre，所以对于AS可以不配置。如果你想换AS的jre则需要生成jre，自己看情况选择吧。我使用AS自带的jre也没出错。
 
@@ -67,84 +65,84 @@ AS开发环境配置是入门者第一个难关，我也停留这好多次，只
 
 JDK已经安装好了，现在该AS登场了，它的下载地址是官方<https://developer.android.google.cn/studio>
 
-![android0](images\android0.png)
+![android0](images/android0.png)
 
 根据系统选择版本，我的系统是win10-64位，选择如下的版本：
 
-![android1](images\android1.png)
+![android1](images/android1.png)
 
 下载后，以管理员身份打开android-studio-ide-201.6858069-windows.exe安装包，等待加载出以下画面，直接点击【Next】，基本是默认设置就可以，最后点击【finish】按钮并启动程序。
 
-![android2](images\android2.png)
-![android3](images\android3.png)
-![android4](images\android4.png)
-![android5](images\android5.png)
-![android6](images\android6.png)
+![android2](images/android2.png)
+![android3](images/android3.png)
+![android4](images/android4.png)
+![android5](images/android5.png)
+![android6](images/android6.png)
 
 这一步是询问你是否需要导入以往Android Studio的配置，如果以前装过Studio则可以导入以往的配置，否则选择【Do not import setting】即可，然后点击【ok】
 
-![android7](images\android7.png)
+![android7](images/android7.png)
 
 等待启动，启动后会出现，询问是否需要设置代理，在这里先选择不需要【Dont’t send】
 
-![android8](images\android8.png)
+![android8](images/android8.png)
 
 下一步，是询问是否设置代理，网上教程一般都是忽略，这里我们要设置，不然在编译时会慢。
 目前经常用的是mirrors.neusoft.edu.cn:80。
 
-![android9](images\android9.png)
-![android10](images\android10.png)
+![android9](images/android9.png)
+![android10](images/android10.png)
 
 点击【Next】
 
-![android11](images\android11.png)
+![android11](images/android11.png)
 
 选择第一个默认的标准配置就好
 
-![android12](images\android12.png)
+![android12](images/android12.png)
 
 选择主题，我喜欢黑色，选择了Darcula，选择好了点击【Next】
 
-![android13](images\android13.png)
+![android13](images/android13.png)
 
 这个时候，它会列出即将要下载的清单，我们可以看到清单里面有Android SDK，这一步我们可以截一下图记录下SDK、JDK的安装目录，然后点击【Finish】。
 
-![android14](images\android14.png)
+![android14](images/android14.png)
 
 根据清单下载资源，因为这一步需要访问外网，有可能会出现下载失败的情况，但是没关系跟着我一步一步安装就没问题（这一步需要等一会），例如，我在安装时就出现了以下的错误，我们先截个图把问题记录下来。可以点击重试【Retry】按钮，不过一般点击重试都是没用的，我们直接点击【Cancel】，等到后面再处理。当然不出现这种问题的话那就更好。
 
-![android15](images\android15.png)
+![android15](images/android15.png)
 
 ### 3、SDK和Build Tool
 
 Android SDK已经不需要单独下载了，在安装AS后可以通过AS的SDK Manager下载。
 
-![sdk0](images\sdk0.png)
+![sdk0](images/sdk0.png)
 
 默认安装情况下都会已经下载好最新的SDK和SDK Build Tool编译工具。可通过勾选“Show Package Details ”看到版本信息和更多细节，这是设置环境的重要依据。其中status栏中installed表示已经安装，Not installed是未安装，安装只要勾选，然后点击"Apply"按钮就会下载，默认是访问Google的，比较慢，如果添加代理将比较快【强烈建议使用代理，具体见前面】。
 
-![sdk1](images\sdk1.png)
-![sdk2](images\sdk2.png)
+![sdk1](images/sdk1.png)
+![sdk2](images/sdk2.png)
 
 ### 4、第一个android程序
 
 创建新的project，选择创建的主题，我这里选择一个空的手机主题，然后点击【Next】下一步
 
-![app0](images\app0.png)
-![app1](images\app1.png)
+![app0](images/app0.png)
+![app1](images/app1.png)
 
 修改Name：项目的名称、Package name：包名、Save location：项目保存的位置、Language：开发语言(官方推荐Kotlin，而我们常选Java，Google好尴尬)、Minimum SDk：开发安卓的版本，选择版本越低兼容性就越高，因为安卓系统是向下兼容的，为了兼容更多手机，尽量不要选择太高的安卓版本，并有版本占有率介绍。然后点击【Finish】
 
-![app3](images\app2.png)
+![app3](images/app2.png)
 
 工程正在初始化，这里也要保持网络的连接，因为这里也是需要下载一些网络资源的，也是从Google上下载，所以会有点慢，我们可以点击右下角那里查看任务。**再一次强烈建议使用代理,否则你会被编译速度搞到崩溃，我的项目现在都是快速编译完成**
 
-![app3](images\app3.png)
+![app3](images/app3.png)
 
 现在简单介绍下APP项目及其运行原理。Android是代码和视图分离的，视图在res\layout中定义的xml文件，一个对应一个窗口，默认创建的activity_amin.xml是主窗口。而java下包名目录下有java文件，它是代码部分，其中MainActivity.java就是主入口，就如C++中WinMain或main。manifests下 的AndroidManifest.xml是软件的核心配置文件，它定义了窗口和代码中重要信息，具体可查阅网文，如果查找某个app的主入口，可通过下图指示的寻找。运行时，引擎从AndroidManifest读取入口，本例中就是MainActivity，它继承Android内置的类，在启动完成后加载窗口。
 
-![app4](images\app4.png)
-![app5](images\app5.png)
+![app4](images/app4.png)
+![app5](images/app5.png)
 
 ### 5、建议设置和快捷键
 
@@ -154,27 +152,27 @@ Android SDK已经不需要单独下载了，在安装AS后可以通过AS的SDK M
 
 Android Studio 1.1默认的编码方式是utf-8，到了Android Studio 1.2默认的编码方式竟然是GBK，到了Android Studio 2.1，默认的部分编码方式是utf-8，我们还是统一设置为UTF-8吧，不要坑队友哦：
 
-![android16](images\android16.png)
+![android16](images/android16.png)
 
 #### (2) 设置代理，提高编译和下载速度
 
 勾选"Automatic proxy configuration URL"，目前代理常用的是大连东软信息学院镜像mirrors.neusoft.edu.cn 端口:80和南阳理工学院镜像mirror.nyist.edu.cn 端口:80。
 
-![android10](images\android10.png)
+![android10](images/android10.png)
 
 #### (3) 其它优化配置
 
 设置自动导包,我们只有每次引用一些类的时候必须要导包，而AS可以设置成自动导包。设置如下：
 
-![android17](images\android17.png)
+![android17](images/android17.png)
 
 禁止代码折叠：Intellij IDEA默认有很多地方的代码都会自动折叠，设置如下：
 
-![android18](images\android18.png)
+![android18](images/android18.png)
 
 修改新建文件文件头：
 
-![android19](images\android19.png)
+![android19](images/android19.png)
 
 #### (4) 常用快捷键
 
@@ -203,8 +201,8 @@ Android Studio 1.1默认的编码方式是utf-8，到了Android Studio 1.2默认
 
 上面也提到，Gradle 跟 AS其实没有关系，但是 Gradle 官方还是很看重 Android 开发的，Google 在推出 AS 的时候选中了 Gradle 作为构建工具，为了支持 Gradle 能在 AS 上使用，Google 做了个 AS 的插件叫 Android Gradle Plugin  ，所以我们能在 AS 上使用 Gradle 完全是因为这个插件的原因。在正常项目中有三个Gradle要搞明白，否则项目编译时经常报错。分别是 **项目根目录的build.gradle、gradle\wrapper\gradle-wrapper.properties和应用目录下的build.gradle** 。
 
-![gradle0](images\gradle0.png)
-![gradle1](images\gradle1.png)
+![gradle0](images/gradle0.png)
+![gradle1](images/gradle1.png)
 
 > 第一个Gradle就是在项目的根目录有个 build.gradle 文件，里面有这么一句代码： `classpath 'com.android.tools.build:gradle:4.1.0'` 这个就是android gradle plugin的版本，而不是 Gradle 的版本，这个是 Google 定的，跟 Gradle 官方没关系。gradel插件主要作用就是自动下载依赖的包，并调用Build Tool编译程序。
 
@@ -254,7 +252,7 @@ task clean(type: Delete) {
 
 > 第二个Gradle就是在项目的根目录下Gradle\wrapper\radle-wrapper.properties中声明了Gradle的真实版本。Gradle Wrapper意为 Gradle 的包装，什么意思呢？假设我们本地有多个项目，一个是比较老的项目，还用着 Gradle 1.0 的版本，一个是比较新的项目用了 Gradle 2.0 的版本，但是你两个项目肯定都想要同时运行的，如果你只装了 Gradle 1.0 的话那肯定不行，所以为了解决这个问题，Google 推出了 Gradle Wrapper 的概念，就是他在你每个项目都配置了一个指定版本的 Gradle ，你可以理解为每个 Android 项目本地都有一个小型的 Gradle ，通过这个每个项目你可以支持用不同的 Gradle 版本来构建项目。
 
-![gradle2](images\gradle2.png)
+![gradle2](images/gradle2.png)
 
 AS每次编译时都会从distributionUrl下载一次Gradle，为提高速度，可以将distributionUrl指向本地。先下载gradle或使用已经下载的gradle，然后修改distributionUrl，类似于`distributionUrl=file:///F:/android-studio/gradle/gradle-4.3-all.zip`
 
@@ -263,11 +261,11 @@ AS每次编译时都会从distributionUrl下载一次Gradle，为提高速度，
 -  无论是本地或网络gradle，要注意版本不能超过Google在gradle插件中声明了版本，可参考官方<https://developer.android.google.cn/studio/releases/gradle-plugin?hl=zh_cn>
 - gradle插件同时说明了对Build Tools版本的要求，这个下面模块或应用目录下的build.gradle配置要注意。
 
-![gradle3](images\gradle3.png)
+![gradle3](images/gradle3.png)
 
 > 第三个Gradle就是模块或应用目录的build.gradle配置文件，它主要分成三个部分
 
-![gradle4](images\gradle4.png)
+![gradle4](images/gradle4.png)
 
 - (1) plugins:声明是Android程序类型
 
@@ -342,8 +340,8 @@ testImplementation和androidTestImplementation：表示声明测试用例库。
 
  HBuilder-Integrate-AS也不是完美的，至少需要改造一个地方就是Maven库，它默认指向google，真是慢上加慢，可以按上面改为阿里云的maven库，由于项目中不使用maven中项目，这项也可以注释掉。
 
-![uniapp0](images\uniapp0.png)
-![uniapp1](images\uniapp1.png)
+![uniapp0](images/uniapp0.png)
+![uniapp1](images/uniapp1.png)
 
 > **注意事项:** 千万不要直接用AS修改，它打开就直接编译了，会直接报错，建议使用VSCode按我上面修改后，然后再用AS编译，看是否成功，我是成功的，说明模板准备好了。如果你想我一样修改模块或应用名，如bjjs，此时要相应修改settings.gradle和两个iml扩展名文件，替换即可(两个iml我没修改也编译运行成功，建议修改)。
 
@@ -360,7 +358,7 @@ testImplementation和androidTestImplementation：表示声明测试用例库。
 
 **Android9运行正常，Android10则白屏** 编译版本的问题，要选择Android9的SDK28和Build Tool 28，它支持在Android10以系统运行。
 
-![uniapp2](images\uniapp2.png)
+![uniapp2](images/uniapp2.png)
 
 在我的Github或Gitee中已经提供了标准，可以和官方示例参考学习。
 
@@ -370,7 +368,7 @@ testImplementation和androidTestImplementation：表示声明测试用例库。
 
 1） 修改模块或应用下的build.gradle
 
-![uniapp3](images\uniapp3.png)
+![uniapp3](images/uniapp3.png)
 
 其中HBuilder打出包资源中manifest.json是100和1.0.0，而AS中是1和1.0，可以不修改，0可以忽略。
 
@@ -378,7 +376,7 @@ testImplementation和androidTestImplementation：表示声明测试用例库。
 
 不要按官方教程中操作，建议修改模板中AndroidManifest.xml，可不更改。尤其是`${apk.applicationId} 必须替换成当前应用的包名`,它应该是AndroidManifest.xml中开头的package，开始我就没搞懂，还以为Hbuild生成本地资源中id呢。
 
-![uniapp4](images\uniapp4.png)
+![uniapp4](images/uniapp4.png)
 
 dcloud_control.xml和strings.xml同官方一样
 
@@ -392,7 +390,7 @@ dcloud_control.xml和strings.xml同官方一样
 
 上面已经完整编译运行项目了，本来很高兴的事，但又遇到问题了，由于我的项目是学生教育软件，要求平板上所有功能，如设置、管控软件的接口和应用商店等都要通过APP进入，防止退出教育软件做其它的事，这就涉及与平板的管控软件通信问题，管控厂商提供了Android的接口文档，需要我调用，看了DClound官方可通过H5+来调用原生Android和第三方SDK，但没提到如何调用第三方接口，而且不断使用plus.android.invoke调用类或对象方法，感觉非常混乱，而且有时还无效。这时就想在AS中定义一个工具类，将常用的调用封装，在uniapp只是简单一句就可以了，岂不优雅。想法是美好的，过程是艰辛的，不断是查，不断测试，终于解决我项目需要的，通过封装的Java类，完美实现了我的所有功能。
 
-![uniapp5](images\uniapp5.png)
+![uniapp5](images/uniapp5.png)
 
 ```android
 //Uitl.java
@@ -432,7 +430,7 @@ public class Util extends Activity {
     }
 }
 ```
-![uniapp6](images\uniapp6.png)
+![uniapp6](images/uniapp6.png)
 
 ```vue
 //home.vue
